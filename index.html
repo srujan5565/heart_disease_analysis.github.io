@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction</title>
+</head>
+<body>
+    <h1>Heart Disease Prediction</h1>
+    <form method="POST" action="/predict">
+        <label for="age">Age:</label>
+        <input type="checkbox" name="age" id="age" required><br><br>
+
+        <label for="sex">Sex (0: Female, 1: Male):</label>
+        <input type="" name="sex" id="sex" required><br><br>
+
+        <label for="cp">Chest Pain:</label>
+        <input type="number" name="cp" id="cp" required><br><br>
+
+        <label for="trestbps"> Resting blood pressure:</label>
+        <input type="number" name="trestbps" id="trestbps" required><br><br>
+
+        <label for="chol">Serum Cholestoral in mg/dl:</label>
+        <input type="number" name="chol" id="chol" required><br><br>
+
+        <label for="fbs">Is Fasting blood sugar > 120 mg/dl:</label>
+        <input type="number" name="fbs" id="fbs" required><br><br>
+
+        <label for="restecg">Resting Electrocardiographic results (values 0,1,2):</label>
+        <input type="number" name="restecg" id="restecg" required><br><br>
+
+        <label for="thalach">The maximum heart rate achieved:</label>
+        <input type="number" name="thalach" id="thalach" required><br><br>
+
+        <label for="exang">Exercise induced angina:</label>
+        <input type="number" name="exang" id="exang" required><br><br>
+
+        <label for="oldpeak">Oldpeak:</label>
+        <input type="number" name="oldpeak" id="oldpeak" required><br><br>
+
+        <label for="slope">Slope of the peak exercise ST segment:</label>
+        <input type="number" name="slope" id="slope" required><br><br>
+
+        <label for="ca">Number of major vessels (0-3) colored by flourosopy:</label>
+        <input type="number" name="ca" id="ca" required><br><br>
+
+        <label for="thal">Thal: 0 = normal; 1 = fixed defect; 2 = reversable defect:</label>
+        <input type="number" name="thal" id="thal" required><br><br>
+
+        <!-- Add other input fields for features like cholesterol, blood pressure, etc. -->
+
+        <input type="submit" value="Predict">
+    </form>
+
+    
+    <!-- Add this jQuery code below your form in the HTML template -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(e) {
+            e.preventDefault(); // Prevent default form submission
+            console.log("Form submitted.");
+            console.log("Serialized data:", $(this).serialize());
+            $.ajax({
+                url: '/predict',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        var newWindow = window.open('', '_blank');
+                        newWindow.document.write('<h2>' + response + '</h2>');
+                        newWindow.document.close();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        $('#result').text("Error occurred. Please try again later."); // Display an error message in case of AJAX error
+                }
+            });
+        });
+    });
+</script>
+<!-- Display prediction result here -->
+<div id="result"></div>
+{% if result %}
+<h2>{{ result }}</h2>
+{% endif %}
+
+</body>
+</html>
