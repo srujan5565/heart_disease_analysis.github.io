@@ -21,7 +21,7 @@ def predict():
     restecg = int(request.form['restecg'])
     thalach = int(request.form['thalach'])
     exang = int(request.form['exang'])
-    oldpeak = int(request.form['oldpeak'])
+    oldpeak = float(request.form['oldpeak'])
     slope = int(request.form['slope'])
     ca = int(request.form['ca'])
     thal = int(request.form['thal'])
@@ -29,10 +29,10 @@ def predict():
 
     # Perform the prediction using your machine learning model
     # Replace 'your_model' with the variable name of your loaded model
-    prediction = loaded_model.predict([[age,sex,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal]])
+    prediction = loaded_model.predict([[age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal]])
 
     # Process the prediction and display the result on the web page
-    result = "Heart Disease: " + ("Present" if prediction[0] == 1 else "Absent")
+    result =("Positive" if prediction[0] == 1 else "Negative")
 
     return render_template('index1.html',result=result)
 
