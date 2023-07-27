@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>  
+    <header class="header">
+        <h1>Know About Your Heart Here</h1>
+    </header>
+    <div class="container">
+    <h1>Heart Disease Prediction</h1> 
+    <form method="POST" action="/predict">
+        <label for="age">Enter your age:</label>
+        <input type="number" name="age" id="age" required><br><br>
+
+        <label for="sex">Sex:</label>
+        <input type="radio" name="sex"  value="0" checked> Male 
+        <input type="radio" name="sex"  value="1"> Female <br></br>
+
+        <label for="cp">Feeling Chest Pain ?:</label>
+        <input type="radio" name="cp" id="cp" value="1" checked> Yes 
+        <input type="radio" name="cp" id="cp" value="0"> No <br></br>
+
+        <label for="trestbps"> Resting blood pressure:</label>
+        <input type="number" name="trestbps" id="trestbps" placeholder="mmHg" required><br><br>
+
+        <label for="chol">Serum Cholestoral in mg/dl:</label>
+        <input type="number" name="chol" id="chol" required><br><br>
+
+        <label for="fbs">Is Fasting blood sugar > 120 mg/dl :</label>
+        <input type="radio" name="fbs" id="fbs" value="1" checked> Yes 
+        <input type="radio" name="fbs" id="fbs" value="0"> No <br></br>
+
+        <label for="restecg">Resting Electrocardiographic results:</label>
+        <input type="range" name="restecg" id="restecg" min="0" max="2" required>
+        <span id="restecg-value">2</span><br><br>
+
+        <label for="thalach">The maximum heart rate achieved:</label>
+        <input type="number" name="thalach" id="thalach" required><br><br>
+
+        <label for="exang">Exercise induced angina:</label>
+        <input type="range" name="exang" id="exang" min="0" max="1" required>
+        <span id="exang-value">1</span><br><br>
+
+        <label for="oldpeak">Oldpeak:</label>
+        <input type="number" step="0.1" name="oldpeak" id="oldpeak" required><br><br>
+
+        <label for="slope">Slope of the peak exercise ST segment:</label>
+        <input type="number" name="slope" id="slope" required><br><br>
+
+        <label for="ca">Number of major vessels (0-3) colored by flourosopy:</label>
+        <input type="range" name="ca" id="ca" min="0" max="3" required>
+        <span id="ca-value">2</span><br><br>
+
+        <label for="thal">Thal: 0 = normal; 1 = fixed defect; 2 = reversable defect:</label>
+        <input type="range" name="thal" id="thal" min="0" max="3" required>
+        <span id="thal-value">2</span><br><br>
+
+        <!-- Add other input fields for features like cholesterol, blood pressure, etc. -->
+
+        <input type="submit" value="Predict">
+    </form>
+    </div>
+
+    
+    <!-- Add this jQuery code below your form in the HTML template -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(e) {
+            e.preventDefault(); // Prevent default form submission
+            console.log("Form submitted.");
+            console.log("Serialized data:", $(this).serialize());
+            $.ajax({
+                url: '/predict',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        var newWindow = window.open('', '_blank');
+                        newWindow.document.write('<h2>' + response + '</h2>');
+                        newWindow.document.close();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        $('#result').text("Error occurred. Please try again later."); // Display an error message in case of AJAX error
+                }
+            });
+        });
+    });
+    const caSlider = document.getElementById('ca');
+    const caValue = document.getElementById('ca-value');
+
+    const thalSlider = document.getElementById('thal');
+    const thalValue = document.getElementById('thal-value');
+
+    const reSlider = document.getElementById('restecg');
+    const reValue = document.getElementById('restecg-value');
+
+    const exangSlider = document.getElementById('exang');
+    const exangValue = document.getElementById('exang-value');
+
+    // Update the label value whenever the slider value changes
+    caSlider.addEventListener('input', () => {
+        caValue.textContent = caSlider.value;
+
+    });
+    thalSlider.addEventListener('input', () => {
+        thalValue.textContent = thalSlider.value;
+    });
+    reSlider.addEventListener('input', () => {
+        reValue.textContent = reSlider.value;
+    });
+    exangSlider.addEventListener('input', () => {
+        exangValue.textContent = exangSlider.value;
+    });
+</script>
+<!-- Display prediction result here -->
+
+
+</body>
+</html>

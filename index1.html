@@ -4,10 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    {% if result %}
-    <h2>{{ result }}</h2>
-    {% endif %}
+    <div class="res">
+        {% if result=="Positive" %}
+        <h2 style="background-color: #cb7d73;" >Heart Disease : {{ result }}</h2>
+        <h3>It is recommended to consult a cardiologist for further evaluation.</h3>
+        {% else %}
+        <h2 style="background-color: #76ad5e;" >Heart Disease : {{ result }}</h2>
+        <h3>Continue to maintain a healthy lifestyle and regular check-ups</h3>
+        {% endif %}
+    </div>
+    <style>
+        .res h2{
+            width: 80%;
+    max-width: 600px;
+    margin: 30 auto;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .res h3{
+            text-align: center;
+        }
+    </style>
 </body>
 </html>
